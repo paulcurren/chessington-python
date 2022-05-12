@@ -1,6 +1,7 @@
 """
 Definitions of each of the different chess pieces.
 """
+from typing import Set, List
 
 from abc import ABC, abstractmethod
 
@@ -33,27 +34,42 @@ class Pawn(Piece):
     """
     A class representing a chess pawn.
     """
-
-    isFirstMove = True
-
-    def get_available_moves(self, board):
+    def get_available_moves(self, board) -> List[Square]:
 
         square = board.find_piece(self)
-        
-        if (self.player == Player.WHITE):
-            if (self.isFirstMove):
-                return [Square.at(square.row + 1, square.col), Square.at(square.row + 2, square.col)]
+
+        increment = 1
+        first_row = 1
+        if self.player == Player.BLACK:
+            increment = -1
+            first_row = board.get_size() - 2
+
+        is_first_move = False
+        if square.row == first_row:
+            is_first_move = True
+
+        if is_first_move:
+            new_square1 = Square.at(square.row + increment, square.col)
+            new_square2 = Square.at(square.row + increment + increment, square.col)
+
+            if board.get_piece(new_square1) == None:
+                if board.get_piece(new_square2) == None:
+                    return [new_square1, new_square2]
+                else:
+                    return [new_square1]
             else:
-                return [Square.at(square.row + 1, square.col)]
+                if board.get_piece(new_square1) == None:
+                    return [new_square1]
+                else:
+                     return []
 
-        if (self.isFirstMove):
-            return [Square.at(square.row - 1, square.col), Square.at(square.row - 2, square.col)]
+
         else:
-            return [Square.at(square.row - 1, square.col)]
-
-    def move_to(self, board, new_square):
-        self.isFirstMove = False
-        super().move_to(board, new_square)
+            new_square = Square.at(square.row + increment, square.col)
+            if board.get_piece(new_square) == None:
+                return [new_square]
+            else:
+                return []
 
 class Knight(Piece):
     """
