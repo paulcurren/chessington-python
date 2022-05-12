@@ -41,10 +41,12 @@ class Pawn(Piece):
         increment = 1
         first_row = 1
         last_row = board.get_size() - 1
+        enemy = Player.BLACK
         if self.player == Player.BLACK:
             increment = -1
             first_row = board.get_size() - 2
             last_row = 0
+            enemy = Player.WHITE
 
         if square.row == last_row:
             return []
@@ -53,28 +55,41 @@ class Pawn(Piece):
         if square.row == first_row:
             is_first_move = True
 
+        squares = []
         if is_first_move:
             new_square1 = Square.at(square.row + increment, square.col)
             new_square2 = Square.at(square.row + increment + increment, square.col)
 
             if board.get_piece(new_square1) == None:
                 if board.get_piece(new_square2) == None:
-                    return [new_square1, new_square2]
+                    squares.append(new_square1)
+                    squares.append(new_square2)
                 else:
-                    return [new_square1]
+                    squares.append(new_square1)
             else:
                 if board.get_piece(new_square1) == None:
-                    return [new_square1]
-                else:
-                     return []
-
+                    squares.append(new_square1)
 
         else:
             new_square = Square.at(square.row + increment, square.col)
             if board.get_piece(new_square) == None:
-                return [new_square]
-            else:
-                return []
+                squares.append(new_square)
+
+        enemy1_square = Square.at(square.row + increment, square.col - increment)
+        enemy2_square = Square.at(square.row + increment, square.col + increment)
+
+        piece1 = board.get_piece(enemy1_square)
+        piece2 = board.get_piece(enemy2_square)
+
+        if piece1 != None and piece1.player == enemy:
+            squares.append(enemy1_square)
+
+        if piece2 != None and piece2.player == enemy:
+            squares.append(enemy2_square)
+
+
+        return squares
+
 
 class Knight(Piece):
     """
