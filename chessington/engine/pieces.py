@@ -1,11 +1,16 @@
 """
 Definitions of each of the different chess pieces.
 """
-from typing import Set, List
+from __future__ import annotations
+from typing import Set, List, TYPE_CHECKING
 
 from abc import ABC, abstractmethod
 
 from chessington.engine.data import Player, Square
+
+if TYPE_CHECKING:
+    from chessington.engine.board import Board
+
 
 class Piece(ABC):
     """
@@ -34,7 +39,7 @@ class Pawn(Piece):
     """
     A class representing a chess pawn.
     """
-    def get_available_moves(self, board) -> List[Square]:
+    def get_available_moves(self, board : Board) -> List[Square]:
 
         square = board.find_piece(self)
 
