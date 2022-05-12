@@ -40,9 +40,14 @@ class Pawn(Piece):
 
         increment = 1
         first_row = 1
+        last_row = board.get_size() - 1
         if self.player == Player.BLACK:
             increment = -1
             first_row = board.get_size() - 2
+            last_row = 0
+
+        if square.row == last_row:
+            return []
 
         is_first_move = False
         if square.row == first_row:
