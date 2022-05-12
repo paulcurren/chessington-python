@@ -43,22 +43,27 @@ class Pawn(Piece):
 
         square = board.find_piece(self)
 
-        increment = 1
-        first_row = 1
-        last_row = board.get_size() - 1
-        enemy = Player.BLACK
-        if self.player == Player.BLACK:
+        if self.player == Player.WHITE:
+            increment = 1
+            first_row = 1
+            last_row = board.get_size() - 1
+            enemy = Player.BLACK
+        else:
             increment = -1
             first_row = board.get_size() - 2
             last_row = 0
             enemy = Player.WHITE
 
+        # on the edge? No more moves
         if square.row == last_row:
             return []
 
-        is_first_move = False
+        # is pawn at starting position?
         if square.row == first_row:
             is_first_move = True
+        else:
+            is_first_move = False
+
 
         squares = []
         if is_first_move:
@@ -75,6 +80,7 @@ class Pawn(Piece):
             if board.get_piece(new_square) == None:
                 squares.append(new_square)
 
+        # look for the enemy to capture
         enemy1_square = Square.at(square.row + increment, square.col - increment)
         enemy2_square = Square.at(square.row + increment, square.col + increment)
 
