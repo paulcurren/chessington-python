@@ -66,14 +66,9 @@ class Pawn(Piece):
             new_square2 = Square.at(square.row + increment + increment, square.col)
 
             if board.get_piece(new_square1) == None:
+                squares.append(new_square1)
                 if board.get_piece(new_square2) == None:
-                    squares.append(new_square1)
                     squares.append(new_square2)
-                else:
-                    squares.append(new_square1)
-            else:
-                if board.get_piece(new_square1) == None:
-                    squares.append(new_square1)
 
         else:
             new_square = Square.at(square.row + increment, square.col)
