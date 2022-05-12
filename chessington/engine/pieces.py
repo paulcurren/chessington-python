@@ -51,6 +51,9 @@ class Pawn(Piece):
         else:
             return [Square.at(square.row - 1, square.col)]
 
+    def move_to(self, board, new_square):
+        self.isFirstMove = False
+        super().move_to(board, new_square)
 
 class Knight(Piece):
     """
